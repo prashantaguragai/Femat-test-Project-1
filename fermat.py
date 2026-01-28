@@ -1,3 +1,7 @@
+# Name: Prashanta Guragai
+# Project 1: Fermat and Miller-Rabin Primality Testing
+# Description: Implementing modular exponentiation, Fermat test, Miller-Rabin test, and probability functions for the GUI.
+
 import random
 
 
@@ -7,7 +11,9 @@ def prime_test(N, k):
 
 
 def mod_exp(x, y, N):
-   # You will need to implement this function and change the return value
+   # Computing (x^y) mod N using recursive repeated squaring.
+    # Time:  O(log y) recursive calls (= O(n) where n is bits of N)
+    # Space: O(log y) due to recursion stack
     # Handling modulo-1 case
     if N == 1:
         return 0
@@ -34,26 +40,28 @@ def mod_exp(x, y, N):
 
 
 def fprobability(k):
-    # You will need to implement this function and change the return value.
+    # Computing Fermat correctness probability after k trials: p = 1 - (1/2)^k
+    # Time:  O(1)
+    # Space: O(1)
     if k <= 0:
         return 0.0
     return 1.0 - (0.5 ** k)
 
 
 def mprobability(k):
-    # You will need to implement this function and change the return value.
+    # Computing Miller-Rabin correctness probability after k trials: p = 1 - (1/4)^k
+    # Time:  O(1)
+    # Space: O(1)
     if k <= 0:
         return 0.0
     return 1.0 - (0.25 ** k)
 
 
 def fermat(N, k):
-    # You will need to implement this function and change the return value, which should be
-    # either 'prime' or 'composite'.
-	#
-    # To generate random values for a, you will most likley want to use
-    # random.randint(low,hi) which gives a random integer between low and
-    #  hi, inclusive.
+    # Running Fermat test using k random bases a in [2, N-2].
+    # Declaring composite if any a^(N-1) mod N != 1, otherwise declaring probably prime.
+    # Time:  O(k * log N) calls to modular exponentiation
+    # Space: O(1) (plus recursion stack inside mod_exp)
     # Handling small N values
     if N <= 1:
         return 'composite'
@@ -78,12 +86,10 @@ def fermat(N, k):
 
 
 def miller_rabin(N, k):
-    # You will need to implement this function and change the return value, which should be
-    # either 'prime' or 'composite'.
-	#
-    # To generate random values for a, you will most likley want to use
-    # random.randint(low,hi) which gives a random integer between low and
-    #  hi, inclusive.
+    # Running Miller-Rabin test using k random bases.
+    # Writing N-1 = 2^s * d (d odd) and checking repeated squaring behavior.
+    # Time:  O(k * log N) (mod_exp + up to s squarings per trial)
+    # Space: O(1) (plus recursion stack inside mod_exp)
     # Handling small N values
     if N <= 1:
         return 'composite'
